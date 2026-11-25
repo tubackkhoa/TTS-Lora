@@ -49,7 +49,7 @@ generate_dataset.py + texts/vietnamese_sentences.txt
                                       merged/voices_v3_turbo.json
                                                    │
                                                    ▼
-                                  app.py hoặc finetune/chat_tts.py
+                                                 app.py
 ```
 
 ## 2. Flow chạy
