@@ -1,4 +1,3 @@
-import argparse
 from pathlib import Path
 
 from huggingface_hub import snapshot_download
@@ -59,9 +58,38 @@ def patch_vieneu_codec(root: Path):
     print("VieNeu MOSS codec patch enabled!")
 
 
+import onnxruntime as ort
+from pathlib import Path
+
+
+def get_onnx_providers():
+    available = ort.get_available_providers()
+
+    if "CUDAExecutionProvider" in available:
+        return [
+            "CUDAExecutionProvider",
+            "CPUExecutionProvider",
+        ]
+
+    if "CoreMLExecutionProvider" in available:
+        return [
+            "CoreMLExecutionProvider",
+            "CPUExecutionProvider",
+        ]
+
+    return ["CPUExecutionProvider"]
+
+
 def load_model(root: Path, backbone_repo: str):
     model_dir = root / "vieneu-models" / "onnx_update"
+
     patch_vieneu_codec(root)
+
+    providers = get_onnx_providers()
+
+    print("ONNX available providers:", ort.get_available_providers())
+    print("Selected providers:", providers)
+
     return Vieneu(
         mode="v3turbo",
         backend="onnx",
