@@ -2,3 +2,4 @@ reference/my_voice.wav
 vieneu-models
 finetune/output
 dataset/raw_audio
+*.pyc
